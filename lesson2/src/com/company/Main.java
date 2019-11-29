@@ -68,5 +68,12 @@ public class Main {
         }
         // оператор %
         System.out.println(5 % 3);
+        // строка
+        String name = "Vasya";
+        switch (name){
+            case "Vasya":
+                System.out.println("оараоп");
+            break;
+        }
     }
 }
