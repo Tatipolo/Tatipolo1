@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Date;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -69,5 +71,32 @@ public class Main {
         System.out.println(str.substring(8, 12));
         System.out.println(str.toLowerCase());
         System.out.println(str.toUpperCase());
+
+        // 10.01.2020 Форматирование строк
+        /*
+        флаги форматирования
+        %S - строка
+        %d - целое число
+        %f - вещественное число
+        %b - boolean
+        %с - символ
+        %t - вывод даты
+        %% - вывод символа процента
+        \n - переход на новую строку
+        \t - символ табуляции
+        \b - удаляет предыдущий символ
+        \\ - просто выведет \
+         */
+        int age = 36;
+        Date d = new Date();
+        String sFormat =  String.format("Меня зовут %10s. \n Мне %d лет. Мой рост %.2f см. Я хочу знать Java на 100 %% %tc",
+        "Денис", age , 175.3, d );
+        System.out.println(sFormat);
+        String sFormat2 = String.format("Мое счастливое число - %2$d. Мой любимый цвет - %1$s", "red", 40 );
+        System.out.println(sFormat2);
+        // преобразование нестроковых объектов в строки
+        int a = 150;
+        String sa = String.valueOf(a);
+        System.out.println(sa);
     }
 }
