@@ -7,4 +7,5 @@ public class LoginRequest {
     public String Email;
     @SerializedName("password")
     public String Password;
+    public String name;
 }

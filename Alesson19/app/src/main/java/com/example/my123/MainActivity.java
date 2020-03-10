@@ -3,7 +3,9 @@ package com.example.my123;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -20,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView errorMsg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText login = findViewById(R.id.login);
         final EditText password = findViewById(R.id.password);
         Button loginBtn = findViewById(R.id.loginBtn);
-        final TextView errorMsg = findViewById(R.id.errorMsg);
+        errorMsg = findViewById(R.id.errorMsg);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,9 +97,17 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 LoginResponse resp = response.body();
                 if (!resp.result) {
+                    errorMsg.setVisibility(View.VISIBLE);
+                    errorMsg.setText(resp.error);
                     // обработка ошибки
                 }else {
-                    // сохранить токен в памяти устройства
+                    // сохранить токен в памяти устройства кэш приложения
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
+                            (MainActivity.this);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("API_TOKEN", resp.token);
+                    editor.apply();
+                    // если мы захотим получить то Preferences.getString();
                     showMenuActivity();
                 }
             }
@@ -103,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 // обработка ошибки
+                errorMsg.setVisibility(View.VISIBLE);
+                errorMsg.setText(t.getMessage());
             }
         });
     }
